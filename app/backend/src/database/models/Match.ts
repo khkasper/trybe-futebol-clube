@@ -26,6 +26,6 @@ Match.init({
   tableName: 'matchs',
 });
 
-Match.belongsTo(Club, { foreignKey: 'id', as: 'clubs'})
+Match.belongsTo(Club, { foreignKey: 'id', as: 'clubs'});
 
 export default Match;
