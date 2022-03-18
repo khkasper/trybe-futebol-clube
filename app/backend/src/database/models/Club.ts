@@ -4,12 +4,13 @@ import Match from './Match';
 
 class Club extends Model {
   public id: number;
-  public club_name: string;
+
+  public clubName: string;
 }
 
 Club.init({
   id: DataTypes.INTEGER,
-  club_name: DataTypes.STRING,
+  clubName: DataTypes.STRING,
 }, {
   underscored: true,
   sequelize: db,
@@ -18,6 +19,9 @@ Club.init({
   tableName: 'clubs',
 });
 
-Club.hasMany(Match, { foreignKey: 'id', as: 'matchs' });
+Match.belongsTo(Club);
+
+Club.hasMany(Match, { foreignKey: 'home_team', as: 'homeTeam' });
+Club.hasMany(Match, { foreignKey: 'away_team', as: 'awayTeam' });
 
 export default Club;
