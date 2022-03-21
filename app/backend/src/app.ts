@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import Login from './routes/loginRoute';
-import errorHandlerMiddleware from './middlewares/errorHandler';
+import errorHandlerMiddleware from './middlewares/errorMiddleware';
 
 class App {
   public app: express.Express;
