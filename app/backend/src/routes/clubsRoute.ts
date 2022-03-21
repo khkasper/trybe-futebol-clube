@@ -17,6 +17,7 @@ export default class Clubs {
       const allTeams: IClub[] = await ClubsController.getAll();
       res.status(StatusCodes.OK).json(allTeams);
     }));
+
     this.router.get('/:id', asyncHandler(async (req: Request, res: Response) => {
       const { id } = req.params;
       const team: IClub = await ClubsController.getById(+id);

@@ -11,4 +11,9 @@ export default class ClubsController {
     const allMatchs = await MatchsService.getAllInProgress(inProgress);
     return allMatchs;
   }
+
+  static async create(body: IMatch): Promise<IMatch> {
+    const match = await MatchsService.create(body);
+    return match;
+  }
 }

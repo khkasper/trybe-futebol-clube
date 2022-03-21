@@ -1,14 +1,14 @@
 export interface IMatch {
-  id: number;
+  id?: number;
   homeTeam: number;
   homeTeamGoals: number;
   awayTeam: number;
   awayTeamGoals: number;
   inProgress: boolean;
-  homeClub: {
+  homeClub?: {
     clubName: string;
   };
-  awayClub: {
+  awayClub?: {
     awayClub: string;
   };
 }

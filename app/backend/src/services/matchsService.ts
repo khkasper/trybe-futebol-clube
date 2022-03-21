@@ -11,4 +11,16 @@ export default class ClubsService {
     const allMatchs = await MatchsRepository.getAllInProgress(inProgress);
     return allMatchs;
   }
+
+  static async create(body: IMatch): Promise<IMatch> {
+    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress } = body;
+    const match = await MatchsRepository.create({
+      homeTeam,
+      awayTeam,
+      homeTeamGoals,
+      awayTeamGoals,
+      inProgress,
+    });
+    return match;
+  }
 }

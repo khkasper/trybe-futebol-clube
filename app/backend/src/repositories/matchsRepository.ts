@@ -23,4 +23,9 @@ export default class ClubsRepository {
     });
     return allMatchs as unknown as IMatch[];
   }
+
+  static async create(matchInfo: IMatch): Promise<IMatch> {
+    const match = await MatchModel.create(matchInfo);
+    return match as unknown as IMatch;
+  }
 }
