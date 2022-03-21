@@ -12,3 +12,11 @@ export interface IMatch {
     awayClub: string;
   };
 }
+
+export interface IMatchPayload {
+  homeTeam: number;
+  homeTeamGoals: number;
+  awayTeam: number;
+  awayTeamGoals: number;
+  inProgress: boolean;
+}

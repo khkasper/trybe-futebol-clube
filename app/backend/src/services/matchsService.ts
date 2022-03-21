@@ -1,5 +1,7 @@
+import UnauthoziredError from '../utils/Errors/unauthorized';
 import { IMatch } from '../interfaces/match';
 import MatchsRepository from '../repositories/matchsRepository';
+import StatusMessages from '../enums/StatusMessages';
 
 export default class ClubsService {
   static async getAll(): Promise<IMatch[]> {
@@ -13,7 +15,10 @@ export default class ClubsService {
   }
 
   static async create(body: IMatch): Promise<IMatch> {
-    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress } = body;
+    const { homeTeam, homeTeamGoals, awayTeam, awayTeamGoals, inProgress } = body;
+
+    if (homeTeam === awayTeam) throw new UnauthoziredError(StatusMessages.noEqualTeams);
+
     const match = await MatchsRepository.create({
       homeTeam,
       awayTeam,

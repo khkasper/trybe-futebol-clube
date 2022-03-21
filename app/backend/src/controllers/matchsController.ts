@@ -1,5 +1,6 @@
 import { IMatch } from '../interfaces/match';
 import MatchsService from '../services/matchsService';
+import MatchValidation from '../validations/matchValidation';
 
 export default class ClubsController {
   static async getAll(): Promise<IMatch[]> {
@@ -13,7 +14,15 @@ export default class ClubsController {
   }
 
   static async create(body: IMatch): Promise<IMatch> {
-    const match = await MatchsService.create(body);
+    const { homeTeam, homeTeamGoals, awayTeam, awayTeamGoals, inProgress } = body;
+    const validated = await MatchValidation.validate({
+      homeTeam,
+      homeTeamGoals,
+      awayTeam,
+      awayTeamGoals,
+      inProgress,
+    });
+    const match = await MatchsService.create(validated);
     return match;
   }
 

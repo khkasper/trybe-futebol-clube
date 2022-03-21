@@ -11,6 +11,9 @@ const errorMiddleware = (err: Error, _req: Request, res: Response, next: NextFun
     case 'JWTError':
       res.status(StatusCodes.UNAUTHORIZED).json({ message });
       break;
+    case 'UnauthoziredError':
+      res.status(StatusCodes.UNAUTHORIZED).json({ message });
+      break;
     case 'ValidationError':
       res.status(StatusCodes.UNAUTHORIZED).json({ message });
       break;

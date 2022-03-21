@@ -10,10 +10,11 @@ export default class Login {
 
   constructor() {
     this.router = Router();
-    this.routes();
+    this.routeGet();
+    this.routePost();
   }
 
-  private routes(): void {
+  private routeGet(): void {
     this.router.get(
       '/validate',
       authVerification,
@@ -22,6 +23,9 @@ export default class Login {
         res.status(StatusCodes.OK).json(userRole);
       }),
     );
+  }
+
+  private routePost(): void {
     this.router.post('/', asyncHandler(async (req: Request, res: Response) => {
       const { email, password }: ILogin = req.body;
       const loginInfo = await LoginController.login({ email, password });
