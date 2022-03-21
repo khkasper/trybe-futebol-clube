@@ -1,10 +1,14 @@
 import * as express from 'express';
+import * as bodyParser from 'body-parser';
+import Login from './routes/loginRoute';
+import errorHandlerMiddleware from './middlewares/errorHandler';
 
 class App {
   public app: express.Express;
 
   constructor() {
     this.app = express();
+    this.app.use(bodyParser.json());
     this.config();
     this.routes();
   }
@@ -18,7 +22,6 @@ class App {
     };
 
     this.app.use(accessControl);
-    this.app.use(express.json());
   }
 
   public start(PORT: string | number):void {
@@ -26,7 +29,8 @@ class App {
   }
 
   private routes(): void {
-    this.app.use('/login', loginRoute);
+    this.app.use('/login', new Login().router);
+    this.app.use(errorHandlerMiddleware);
   }
 }
 

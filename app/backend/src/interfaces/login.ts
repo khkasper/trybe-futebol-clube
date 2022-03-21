@@ -1,0 +1,24 @@
+export interface IUser {
+  id: number;
+  username: string;
+  role: string;
+  email: string;
+  password: string;
+}
+
+export interface ILogin {
+  email: string;
+  password: string;
+}
+
+export interface UserWithoutPassword {
+  id: number;
+  username: string;
+  role: string;
+  email: string;
+}
+
+export interface ILoginResponse {
+  user: Omit<IUser, 'password'>;
+  token: string;
+}

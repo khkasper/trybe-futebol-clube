@@ -15,7 +15,7 @@ const errorHandlerMiddleware = (err: Error, _req: Request, res: Response, next: 
       res.status(StatusCodes.UNAUTHORIZED).json({ message });
       break;
     default:
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error.' });
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message });
   }
 
   next();

@@ -2,4 +2,5 @@ bcryptjs
 @types/bcryptjs
 joi
 @types/joi
-express-rescue
+express-async-handler
+http-status-codes

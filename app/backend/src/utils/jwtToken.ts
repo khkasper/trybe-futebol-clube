@@ -1,16 +1,20 @@
 import { readFileSync } from 'fs';
 import { sign, verify, SignOptions } from 'jsonwebtoken';
-import { UserWithoutPassword } from '../domain';
+import { UserWithoutPassword } from '../interfaces/login';
 
 const jwtSecret = readFileSync('./jwt.evaluation.key');
 const jwtConfig: SignOptions = { expiresIn: '1h', algorithm: 'HS256' };
 
-export const generateToken = async (user: UserWithoutPassword): Promise<string> => {
-  const token = sign(user, jwtSecret, jwtConfig);
-  return token;
-};
+export default class JwtToken {
+  static async generate(user: UserWithoutPassword): Promise<string> {
+    return sign(user, jwtSecret, jwtConfig);
+  }
 
-export const verifyToken = async (token: string): Promise<UserWithoutPassword> => {
-  const verifiedToken = verify(token, jwtSecret);
-  return verifiedToken as UserWithoutPassword;
-};
+  static async verify(token: string): Promise<UserWithoutPassword | undefined> {
+    try {
+      return verify(token, jwtSecret) as UserWithoutPassword;
+    } catch (error) {
+      return undefined;
+    }
+  }
+}
