@@ -1,8 +1,8 @@
-import * as bcryptjs from 'bcryptjs';
+import { compare } from 'bcryptjs';
 
-const decrypt = async (password: string, hash: string): Promise<boolean> => {
-  const decryptedPass = await bcryptjs.compare(password, hash);
-  return decryptedPass;
+const comparePassword = async (password: string, hash: string): Promise<boolean> => {
+  const comparedPassword = await compare(password, hash);
+  return comparedPassword;
 };
 
-export default decrypt;
+export default comparePassword;

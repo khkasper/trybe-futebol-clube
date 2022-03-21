@@ -4,6 +4,7 @@ import MatchModel from './Match';
 
 class ClubModel extends Model {
   public id: number;
+
   public clubName: string;
 }
 

@@ -2,8 +2,8 @@ import * as Joi from 'joi';
 import StatusMessages from '../enums/StatusMessages';
 import { ILogin } from '../interfaces/login';
 
-export default class Login {
-  static async validation(body: ILogin): Promise<ILogin> {
+export default class LoginValidation {
+  static async validate(body: ILogin): Promise<ILogin> {
     const schema = Joi.object<ILogin>({
       email: Joi.string().email().required(),
       password: Joi.string().min(6).required(),

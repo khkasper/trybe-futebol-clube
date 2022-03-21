@@ -7,4 +7,3 @@ export const throwError = (name: string, defaultMessage = '') =>
 
 export const BadRequestError = 'BadRequestError';
 export const JWTError = 'JWTError';
-export const ValidationError = 'ValidationError';

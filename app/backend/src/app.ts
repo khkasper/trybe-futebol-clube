@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import Login from './routes/loginRoute';
+import Clubs from './routes/clubsRoute';
 import errorMiddleware from './middlewares/errorMiddleware';
 
 class App {
@@ -30,6 +31,7 @@ class App {
 
   private routes(): void {
     this.app.use('/login', new Login().router);
+    this.app.use('/clubs', new Clubs().router);
     this.app.use(errorMiddleware);
   }
 }
