@@ -23,4 +23,8 @@ export default class ClubsService {
     });
     return match;
   }
+
+  static async updateInProgress(id: string): Promise<void> {
+    await MatchsRepository.updateInProgress(id);
+  }
 }

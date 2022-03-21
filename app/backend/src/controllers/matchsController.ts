@@ -16,4 +16,8 @@ export default class ClubsController {
     const match = await MatchsService.create(body);
     return match;
   }
+
+  static async updateInProgress(id: string): Promise<void> {
+    await MatchsService.updateInProgress(id);
+  }
 }

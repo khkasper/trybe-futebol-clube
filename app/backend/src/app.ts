@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 import Login from './routes/loginRoute';
 import Clubs from './routes/clubsRoute';
 import Matchs from './routes/matchsRoute';
@@ -11,6 +12,7 @@ class App {
   constructor() {
     this.app = express();
     this.app.use(bodyParser.json());
+    this.app.use(cors());
     this.config();
     this.routes();
   }

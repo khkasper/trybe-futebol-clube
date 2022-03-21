@@ -10,10 +10,12 @@ export default class Matchs {
 
   constructor() {
     this.router = Router();
-    this.routes();
+    this.routeGet();
+    this.routePost();
+    this.routePatch();
   }
 
-  private routes(): void {
+  private routeGet(): void {
     this.router.get('/', asyncHandler(async (req: Request, res: Response) => {
       const { inProgress } = req.query;
       let allMatchs: IMatch[];
@@ -23,10 +25,20 @@ export default class Matchs {
 
       res.status(StatusCodes.OK).json(allMatchs);
     }));
+  }
 
+  private routePost(): void {
     this.router.post('/', authVerification, asyncHandler(async (req: Request, res: Response) => {
       const match = await MatchsController.create(req.body);
       res.status(StatusCodes.CREATED).json(match);
+    }));
+  }
+
+  private routePatch(): void {
+    this.router.patch('/:id/finish', asyncHandler(async (req: Request, res: Response) => {
+      const { id } = req.params;
+      await MatchsController.updateInProgress(id);
+      res.status(StatusCodes.OK).json({ message: 'Finalizado!' });
     }));
   }
 }

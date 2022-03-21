@@ -28,4 +28,8 @@ export default class ClubsRepository {
     const match = await MatchModel.create(matchInfo);
     return match as unknown as IMatch;
   }
+
+  static async updateInProgress(id: string): Promise<void> {
+    await MatchModel.update({ inProgress: false }, { where: { id } });
+  }
 }
