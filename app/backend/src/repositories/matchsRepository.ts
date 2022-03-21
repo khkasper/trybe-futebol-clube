@@ -12,4 +12,15 @@ export default class ClubsRepository {
     });
     return allMatchs as unknown as IMatch[];
   }
+
+  static async getAllInProgress(inProgress: boolean): Promise<IMatch[]> {
+    const allMatchs = await MatchModel.findAll({
+      where: { inProgress },
+      include: [
+        { model: ClubModel, as: 'awayClub', attributes: ['clubName'] },
+        { model: ClubModel, as: 'homeClub', attributes: ['clubName'] },
+      ],
+    });
+    return allMatchs as unknown as IMatch[];
+  }
 }

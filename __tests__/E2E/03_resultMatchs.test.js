@@ -148,7 +148,7 @@ describe.only(getRequirement(19), () => {
   });
 });
 
-describe(getRequirement(20), () => {
+describe.only(getRequirement(20), () => {
   it('Será validado que ao escolher a opção de partidas em andamento será filtrado todas as partidas em andamento', async () => {
     await page.waitForTimeout(puppeteerDefs.pause.brief);
 

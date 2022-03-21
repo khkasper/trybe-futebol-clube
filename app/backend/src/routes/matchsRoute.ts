@@ -13,8 +13,13 @@ export default class Matchs {
   }
 
   private routes(): void {
-    this.router.get('/', asyncHandler(async (_req: Request, res: Response) => {
-      const allMatchs: IMatch[] = await MatchsController.getAll();
+    this.router.get('/', asyncHandler(async (req: Request, res: Response) => {
+      const { inProgress } = req.query;
+      let allMatchs: IMatch[];
+
+      if (!inProgress) allMatchs = await MatchsController.getAll();
+      else allMatchs = await MatchsController.getAllInProgress((inProgress) === 'true');
+
       res.status(StatusCodes.OK).json(allMatchs);
     }));
   }

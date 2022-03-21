@@ -6,4 +6,9 @@ export default class ClubsService {
     const allMatchs = await MatchsRepository.getAll();
     return allMatchs;
   }
+
+  static async getAllInProgress(inProgress: boolean): Promise<IMatch[]> {
+    const allMatchs = await MatchsRepository.getAllInProgress(inProgress);
+    return allMatchs;
+  }
 }
