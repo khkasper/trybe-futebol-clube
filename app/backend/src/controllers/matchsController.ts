@@ -1,4 +1,4 @@
-import { IMatch } from '../interfaces/match';
+import { IMatch, IScorePayload } from '../interfaces/match';
 import MatchsService from '../services/matchsService';
 import MatchValidation from '../validations/matchValidation';
 
@@ -28,5 +28,9 @@ export default class ClubsController {
 
   static async updateInProgress(id: string): Promise<void> {
     await MatchsService.updateInProgress(id);
+  }
+
+  static async update(id: string, { homeTeamGoals, awayTeamGoals }: IScorePayload): Promise<void> {
+    await MatchsService.update(id, { homeTeamGoals, awayTeamGoals });
   }
 }

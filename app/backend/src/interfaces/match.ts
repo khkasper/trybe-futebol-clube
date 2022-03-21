@@ -20,3 +20,8 @@ export interface IMatchPayload {
   awayTeamGoals: number;
   inProgress: boolean;
 }
+
+export interface IScorePayload {
+  homeTeamGoals: number;
+  awayTeamGoals: number;
+}

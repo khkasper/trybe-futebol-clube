@@ -40,5 +40,12 @@ export default class Matchs {
       await MatchsController.updateInProgress(id);
       res.status(StatusCodes.OK).json({ message: 'Finalizado!' });
     }));
+
+    this.router.patch('/:id/', asyncHandler(async (req: Request, res: Response) => {
+      const { id } = req.params;
+      const { homeTeamGoals, awayTeamGoals } = req.body;
+      await MatchsController.update(id, { homeTeamGoals, awayTeamGoals });
+      res.status(StatusCodes.OK).json({ message: 'Atualizado!' });
+    }));
   }
 }

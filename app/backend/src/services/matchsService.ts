@@ -1,5 +1,5 @@
 import UnauthoziredError from '../utils/Errors/unauthorized';
-import { IMatch } from '../interfaces/match';
+import { IMatch, IScorePayload } from '../interfaces/match';
 import MatchsRepository from '../repositories/matchsRepository';
 import StatusMessages from '../enums/StatusMessages';
 
@@ -14,8 +14,8 @@ export default class ClubsService {
     return allMatchs;
   }
 
-  static async create(body: IMatch): Promise<IMatch> {
-    const { homeTeam, homeTeamGoals, awayTeam, awayTeamGoals, inProgress } = body;
+  static async create(validated: IMatch): Promise<IMatch> {
+    const { homeTeam, homeTeamGoals, awayTeam, awayTeamGoals, inProgress } = validated;
 
     if (homeTeam === awayTeam) throw new UnauthoziredError(StatusMessages.noEqualTeams);
 
@@ -31,5 +31,9 @@ export default class ClubsService {
 
   static async updateInProgress(id: string): Promise<void> {
     await MatchsRepository.updateInProgress(id);
+  }
+
+  static async update(id: string, { homeTeamGoals, awayTeamGoals }: IScorePayload): Promise<void> {
+    await MatchsRepository.update(id, { homeTeamGoals, awayTeamGoals });
   }
 }

@@ -1,4 +1,4 @@
-import { IMatch } from '../interfaces/match';
+import { IMatch, IScorePayload } from '../interfaces/match';
 import MatchModel from '../database/models/Match';
 import ClubModel from '../database/models/Club';
 
@@ -31,5 +31,9 @@ export default class ClubsRepository {
 
   static async updateInProgress(id: string): Promise<void> {
     await MatchModel.update({ inProgress: false }, { where: { id } });
+  }
+
+  static async update(id: string, { homeTeamGoals, awayTeamGoals }: IScorePayload): Promise<void> {
+    await MatchModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
   }
 }
