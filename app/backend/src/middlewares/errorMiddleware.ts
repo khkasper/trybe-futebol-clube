@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-const errorHandlerMiddleware = (err: Error, _req: Request, res: Response, next: NextFunction) => {
+const errorMiddleware = (err: Error, _req: Request, res: Response, next: NextFunction) => {
   const { name, message } = err as Error;
 
   switch (name) {
@@ -9,7 +9,7 @@ const errorHandlerMiddleware = (err: Error, _req: Request, res: Response, next: 
       res.status(StatusCodes.BAD_REQUEST).json({ message });
       break;
     case 'JWTError':
-      res.status(StatusCodes.BAD_REQUEST).json({ message });
+      res.status(StatusCodes.UNAUTHORIZED).json({ message });
       break;
     case 'ValidationError':
       res.status(StatusCodes.UNAUTHORIZED).json({ message });
@@ -21,4 +21,4 @@ const errorHandlerMiddleware = (err: Error, _req: Request, res: Response, next: 
   next();
 };
 
-export default errorHandlerMiddleware;
+export default errorMiddleware;

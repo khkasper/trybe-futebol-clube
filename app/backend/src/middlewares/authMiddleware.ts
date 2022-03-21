@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import JwtToken from '../utils/jwtToken';
 import StatusMessages from '../enums/StatusMessages';
-import { throwError, UnauthorizedError } from '../utils/error';
+import { throwError, JWTError } from '../utils/error';
 
 const authVerification = async (
   req: Request,
@@ -10,11 +10,11 @@ const authVerification = async (
 ): Promise<void> => {
   const { authorization } = req.headers;
 
-  if (!authorization) throwError(UnauthorizedError, StatusMessages.tokenNotFound);
+  if (!authorization) throwError(JWTError, StatusMessages.tokenNotFound);
 
   const verifiedToken = JwtToken.verify(authorization as string);
 
-  if (!verifiedToken) throwError(UnauthorizedError, StatusMessages.invalidToken);
+  if (!verifiedToken) throwError(JWTError, StatusMessages.invalidToken);
 
   const { role } = verifiedToken;
 

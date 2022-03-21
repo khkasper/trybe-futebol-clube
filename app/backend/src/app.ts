@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import Login from './routes/loginRoute';
-import errorHandlerMiddleware from './middlewares/errorMiddleware';
+import errorMiddleware from './middlewares/errorMiddleware';
 
 class App {
   public app: express.Express;
@@ -30,7 +30,7 @@ class App {
 
   private routes(): void {
     this.app.use('/login', new Login().router);
-    this.app.use(errorHandlerMiddleware);
+    this.app.use(errorMiddleware);
   }
 }
 
