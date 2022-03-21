@@ -26,9 +26,7 @@ ClubModel.init({
   tableName: 'clubs',
 });
 
-MatchModel.belongsTo(ClubModel);
-
-ClubModel.hasMany(MatchModel, { foreignKey: 'home_team', as: 'homeTeam' });
-ClubModel.hasMany(MatchModel, { foreignKey: 'away_team', as: 'awayTeam' });
+MatchModel.belongsTo(ClubModel, { foreignKey: 'home_team', as: 'homeClub' });
+MatchModel.belongsTo(ClubModel, { foreignKey: 'away_team', as: 'awayClub' });
 
 export default ClubModel;
