@@ -1,91 +1,135 @@
-// import chaiHttp = require('chai-http');
-// import * as sinon from 'sinon';
-// import * as chai from 'chai';
-// import * as StatusCodes from 'http-status-codes';
-// import { Response } from 'superagent';
-// import { app } from '../app';
+import chaiHttp = require('chai-http');
+import * as sinon from 'sinon';
+import * as chai from 'chai';
+import * as mocha from 'mocha';
+import { app } from '../app';
+import { Response } from 'superagent';
 
-// chai.use(chaiHttp);
+import * as StatusCodes from 'http-status-codes';
+import StatusMessages from '../enums/StatusMessages';
+import MatchsModel from '../database/models/Match';
+import { matchsMock, matchsInProgressMock, matchMock, scoreboardMock } from './Mocks/matchsMock';
+import { userPayloadMock } from './Mocks/usersMock';
 
-// const { expect } = chai;
 
-// describe('Test /matchs (GET)', () => {
-//   let chaiHttpResponse: Response;
+chai.use(chaiHttp);
 
-//   before(async () => {
-//     sinon
-//       .stub(Example, "findOne")
-//       .resolves({
-        
-//       } as Example);
-//   });
+const { expect } = chai;
 
-//   after(()=>{
-//     (Example.findOne as sinon.SinonStub).restore();
-//   })
+describe('Test /matchs (GET)', () => {
+  let chaiHttpResponse: Response;
 
-//   it('...', async () => {
-//     chaiHttpResponse = await chai
-//       .request(app)
+  describe('Test /matchs', () => {
+    before(async () => {
+      sinon
+        .stub(MatchsModel, 'findAll')
+        .resolves(matchsMock as any);
+    });
 
-//     expect(...);
-//   });
+    after(()=>{
+      (MatchsModel.findAll as sinon.SinonStub).restore();
+    })
 
-//   it('Seu sub-teste', () => {
-//     expect(false).to.be.eq(true);
-//   });
-// });
+    it('should return a status code OK and a list with all matchs', async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .get('/matchs');
 
-// describe('Test /matchs (POST)', () => {
-//   let chaiHttpResponse: Response;
+      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.OK);
+      expect(chaiHttpResponse.body).to.be.an('array');
+      expect(chaiHttpResponse.body[0]).to.be.an('object');
+      expect(chaiHttpResponse.body[0]).to.have.property('id').equal(matchsMock[0].id);
+      expect(chaiHttpResponse.body[0]).to.have.property('homeTeam').equal(matchsMock[0].homeTeam);
+      expect(chaiHttpResponse.body[0]).to.have.property('homeTeamGoals').equal(matchsMock[0].homeTeamGoals);
+      expect(chaiHttpResponse.body[0]).to.have.property('awayTeam').equal(matchsMock[0].awayTeam);
+      expect(chaiHttpResponse.body[0]).to.have.property('awayTeamGoals').equal(matchsMock[0].awayTeamGoals);
+      expect(chaiHttpResponse.body[0]).to.have.property('inProgress').equal(matchsMock[0].inProgress);
+      expect(chaiHttpResponse.body[0]).to.have.property('homeClub').equal(matchsMock[0].homeClub);
+      expect(chaiHttpResponse.body[0]).to.have.property('awayClub').equal(matchsMock[0].awayClub);
+    });
+  });
 
-//   before(async () => {
-//     sinon
-//       .stub(Example, "findOne")
-//       .resolves({
-        
-//       } as Example);
-//   });
+  describe('Test /matchs?inProgress=true', () => {
+    before(async () => {
+      sinon
+        .stub(MatchsModel, 'findAll')
+        .resolves(matchsInProgressMock as any);
+    });
 
-//   after(()=>{
-//     (Example.findOne as sinon.SinonStub).restore();
-//   })
+    after(()=>{
+      (MatchsModel.findAll as sinon.SinonStub).restore();
+    })
 
-//   it('...', async () => {
-//     chaiHttpResponse = await chai
-//       .request(app)
+    it('should return a status code OK and a list with all matchs when inProgress=true', async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .get('/matchs?inProgress=true');
 
-//     expect(...);
-//   });
+      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.OK);
+      expect(chaiHttpResponse.body).to.be.an('array');
+      expect(chaiHttpResponse.body[0]).to.be.an('object');
+      expect(chaiHttpResponse.body[0]).to.have.property('id').equal(matchsInProgressMock[0].id);
+      expect(chaiHttpResponse.body[0]).to.have.property('homeTeam').equal(matchsInProgressMock[0].homeTeam);
+      expect(chaiHttpResponse.body[0]).to.have.property('homeTeamGoals').equal(matchsInProgressMock[0].homeTeamGoals);
+      expect(chaiHttpResponse.body[0]).to.have.property('awayTeam').equal(matchsInProgressMock[0].awayTeam);
+      expect(chaiHttpResponse.body[0]).to.have.property('awayTeamGoals').equal(matchsInProgressMock[0].awayTeamGoals);
+      expect(chaiHttpResponse.body[0]).to.have.property('inProgress').equal(matchsInProgressMock[0].inProgress);
+      expect(chaiHttpResponse.body[0]).to.have.property('homeClub').equal(matchsInProgressMock[0].homeClub);
+      expect(chaiHttpResponse.body[0]).to.have.property('awayClub').equal(matchsInProgressMock[0].awayClub);
+    });
+  });
 
-//   it('Seu sub-teste', () => {
-//     expect(false).to.be.eq(true);
-//   });
-// });
+  describe('Test /matchs?inProgress=false', () => {
+    before(async () => {
+      sinon
+        .stub(MatchsModel, 'findAll')
+        .resolves(matchsMock as any);
+    });
 
-// describe('Test /matchs (PATCH)', () => {
-//   let chaiHttpResponse: Response;
+    after(()=>{
+      (MatchsModel.findAll as sinon.SinonStub).restore();
+    })
 
-//   before(async () => {
-//     sinon
-//       .stub(Example, "findOne")
-//       .resolves({
-        
-//       } as Example);
-//   });
+    it('should return a status code OK and a list with all matchs when inProgress=false', async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .get('/matchs?inProgress=false');
 
-//   after(()=>{
-//     (Example.findOne as sinon.SinonStub).restore();
-//   })
+      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.OK);
+      expect(chaiHttpResponse.body).to.be.an('array');
+      expect(chaiHttpResponse.body[0]).to.be.an('object');
+      expect(chaiHttpResponse.body[0]).to.have.property('id').equal(matchsMock[0].id);
+      expect(chaiHttpResponse.body[0]).to.have.property('homeTeam').equal(matchsMock[0].homeTeam);
+      expect(chaiHttpResponse.body[0]).to.have.property('homeTeamGoals').equal(matchsMock[0].homeTeamGoals);
+      expect(chaiHttpResponse.body[0]).to.have.property('awayTeam').equal(matchsMock[0].awayTeam);
+      expect(chaiHttpResponse.body[0]).to.have.property('awayTeamGoals').equal(matchsMock[0].awayTeamGoals);
+      expect(chaiHttpResponse.body[0]).to.have.property('inProgress').equal(matchsMock[0].inProgress);
+      expect(chaiHttpResponse.body[0]).to.have.property('homeClub').equal(matchsMock[0].homeClub);
+      expect(chaiHttpResponse.body[0]).to.have.property('awayClub').equal(matchsMock[0].awayClub);
+    });
+  });
+});
 
-//   it('...', async () => {
-//     chaiHttpResponse = await chai
-//       .request(app)
+describe('Test /matchs (PATCH)', () => {
+  let chaiHttpResponse: Response;
 
-//     expect(...);
-//   });
+  before(async () => {
+    sinon
+      .stub(MatchsModel, 'update')
+      .resolves(matchMock as any);
+  });
 
-//   it('Seu sub-teste', () => {
-//     expect(false).to.be.eq(true);
-//   });
-// });
+  after(()=>{
+    (MatchsModel.update as sinon.SinonStub).restore();
+  });
+
+  it('should return a status code OK and update the match result', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .patch('/matchs/1')
+      .send(scoreboardMock);
+
+    expect(chaiHttpResponse.status).to.be.eq(StatusCodes.OK);
+    expect(chaiHttpResponse.body.message).to.be.eq('Atualizado!');
+  });
+});

@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
+import 'express-async-errors';
 import Login from './routes/loginRoute';
 import Clubs from './routes/clubsRoute';
 import Matchs from './routes/matchsRoute';

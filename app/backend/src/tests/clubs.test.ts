@@ -1,3 +1,4 @@
+import chaiHttp = require('chai-http');
 import * as sinon from 'sinon';
 import * as chai from 'chai';
 import * as mocha from 'mocha';
@@ -7,8 +8,6 @@ import { Response } from 'superagent';
 import * as StatusCodes from 'http-status-codes';
 import ClubModel from '../database/models/Club';
 import clubsMock from './Mocks/clubsMock';
-
-import chaiHttp = require('chai-http');
 
 chai.use(chaiHttp);
 
