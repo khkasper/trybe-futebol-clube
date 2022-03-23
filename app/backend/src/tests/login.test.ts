@@ -1,58 +1,102 @@
-// import * as sinon from 'sinon';
-// import * as chai from 'chai';
-// import chaiHttp = require('chai-http');
-// import { app } from '../app';
-// import { Response } from 'superagent';
-// import * as StatusCodes from 'http-status-codes';
-// import UserModel from '../database/models/User';
-// import { validUser, invalidUser, validAdmin, invalidAdmin } from './Mocks/usersMock';
+import chaiHttp = require('chai-http');
+import * as sinon from 'sinon';
+import * as chai from 'chai';
+import * as mocha from 'mocha';
+import { app } from '../app';
+import { Response } from 'superagent';
 
-// chai.use(chaiHttp);
+import * as StatusCodes from 'http-status-codes';
+import UserModel from '../database/models/User';
+import { userPayloadMock, validUserMock, userPayloadMockWithoutMail, userPayloadMockWithoutPass, invalidUserEmailPayloadMock, invalidUserPassPayloadMock } from './Mocks/usersMock';
+import StatusMessages from '../enums/StatusMessages';
 
-// const { expect } = chai;
+chai.use(chaiHttp);
 
-// describe('Test /login (GET)', () => {
-//   let chaiHttpResponse: Response;
+const { expect } = chai;
 
-//   before(async () => {
-//     sinon
-//       .stub(Example, "findOne")
-//       .resolves({
-        
-//       } as Example);
-//   });
+describe('Test /login (POST)', () => {
+  let chaiHttpResponse: Response;
 
-//   after(()=>{
-//     (Example.findOne as sinon.SinonStub).restore();
-//   })
+  describe('Test if login successfully', () => {
+    before(async () => {
+      sinon
+        .stub(UserModel, 'findOne')
+        .resolves(validUserMock as any);
+    });
 
-//   it('...', async () => {
-//     chaiHttpResponse = await chai
-//       .request(app)
+    after(()=>{
+      (UserModel.findOne as sinon.SinonStub).restore();
+    })
 
-//     expect(...);
-//   });
-// });
+    it('should return a 200 status code and the user data', async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/login')
+        .send(userPayloadMock);
 
-// describe('Test /login (POST)', () => {
-//   let chaiHttpResponse: Response;
+      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.OK);
+      expect(chaiHttpResponse.body).to.have.property('user');
+      expect(chaiHttpResponse.body).to.have.property('token');
+      expect(chaiHttpResponse.body.user).to.have.property('id').equal(validUserMock.id);
+      expect(chaiHttpResponse.body.user).to.have.property('email').equal(validUserMock.email);
+      expect(chaiHttpResponse.body.user).to.have.property('role').equal(validUserMock.role);
+      expect(chaiHttpResponse.body.token).to.be.a('string');
+    });
+  });
 
-//   before(async () => {
-//     sinon
-//       .stub(Example, "findOne")
-//       .resolves({
-        
-//       } as Example);
-//   });
+  describe('Test validations', () => {
+    before(async () => {
+      sinon
+        .stub(UserModel, 'findOne')
+        .resolves(validUserMock as any);
+    });
 
-//   after(()=>{
-//     (Example.findOne as sinon.SinonStub).restore();
-//   })
+    after(()=>{
+      (UserModel.findOne as sinon.SinonStub).restore();
+    })
 
-//   it('...', async () => {
-//     chaiHttpResponse = await chai
-//       .request(app)
+    it('should return a 401 status code when email is empty', async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/login')
+        .send(userPayloadMockWithoutMail);
 
-//     expect(...);
-//   });
-// });
+      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.UNAUTHORIZED);
+      expect(chaiHttpResponse.body).to.have.property('message');
+      expect(chaiHttpResponse.body.message).to.be.eq(StatusMessages.allFields);
+    });
+
+    it('should return a 401 status code when password is empty', async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/login')
+        .send(userPayloadMockWithoutPass);
+
+      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.UNAUTHORIZED);
+      expect(chaiHttpResponse.body).to.have.property('message');
+      expect(chaiHttpResponse.body.message).to.be.eq(StatusMessages.allFields);
+    });
+
+    it('should return a 401 status code when email is wrong', async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/login')
+        .send(invalidUserEmailPayloadMock);
+
+      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.UNAUTHORIZED);
+      expect(chaiHttpResponse.body).to.have.property('message');
+      expect(chaiHttpResponse.body.message).to.be.eq(StatusMessages.incorrectMailOrPass);
+    });
+
+    it('should return a 401 status code when password is wrong', async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/login')
+        .send(invalidUserPassPayloadMock);
+
+      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.UNAUTHORIZED);
+      expect(chaiHttpResponse.body).to.have.property('message');
+      expect(chaiHttpResponse.body.message).to.be.eq(StatusMessages.incorrectMailOrPass);
+    });
+  });
+});
