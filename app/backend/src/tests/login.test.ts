@@ -7,7 +7,7 @@ import { Response } from 'superagent';
 
 import * as StatusCodes from 'http-status-codes';
 import UserModel from '../database/models/User';
-import { userPayloadMock, validUserMock, userPayloadMockWithoutMail, userPayloadMockWithoutPass, invalidUserEmailPayloadMock, invalidUserPassPayloadMock } from './Mocks/usersMock';
+import { userPayloadMock, adminPayloadMock, validUserMock, validAdminMock, userPayloadMockWithoutMail, userPayloadMockWithoutPass, invalidUserEmailPayloadMock, invalidUserPassPayloadMock } from './Mocks/usersMock';
 import StatusMessages from '../enums/StatusMessages';
 
 chai.use(chaiHttp);
@@ -98,5 +98,38 @@ describe('Test /login (POST)', () => {
       expect(chaiHttpResponse.body).to.have.property('message');
       expect(chaiHttpResponse.body.message).to.be.eq(StatusMessages.incorrectMailOrPass);
     });
+  });
+});
+
+
+describe('Test /login/validate (GET)', () => {
+  let chaiHttpResponse: Response;
+  let token: string;
+
+  before(async () => {
+    sinon
+      .stub(UserModel, 'findOne')
+      .resolves(validAdminMock as any);
+
+    chaiHttpResponse = await chai
+    .request(app)
+    .post('/login')
+    .send(adminPayloadMock);
+
+    token = chaiHttpResponse.body.token;
+  });
+
+  after(()=>{
+    (UserModel.findOne as sinon.SinonStub).restore();
+  })
+
+  it('should return a 200 status code and the user role', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .get('/login/validate')
+      .set('Authorization', `${token}`);
+
+    expect(chaiHttpResponse.status).to.be.eq(StatusCodes.OK);
+    expect(chaiHttpResponse.body).to.be.eq('admin');
   });
 });
