@@ -1,40 +1,58 @@
-import * as sinon from 'sinon';
-import * as chai from 'chai';
-import chaiHttp = require('chai-http');
+// import * as sinon from 'sinon';
+// import * as chai from 'chai';
+// import chaiHttp = require('chai-http');
+// import { app } from '../app';
+// import { Response } from 'superagent';
+// import * as StatusCodes from 'http-status-codes';
+// import UserModel from '../database/models/User';
+// import { validUser, invalidUser, validAdmin, invalidAdmin } from './Mocks/usersMock';
 
-import { app } from '../app';
-import UserModel from '../database/models/User';
-import { validUser, invalidUser, validAdmin, invalidAdmin } from './Mocks/usersMock';
+// chai.use(chaiHttp);
 
-import { Response } from 'superagent';
+// const { expect } = chai;
 
-chai.use(chaiHttp);
+// describe('Test /login (GET)', () => {
+//   let chaiHttpResponse: Response;
 
-const { expect } = chai;
-
-describe('Seu teste', () => {
-  let chaiHttpResponse: Response;
-
-  before(async () => {
-    sinon
-      .stub(Example, "findOne")
-      .resolves({
+//   before(async () => {
+//     sinon
+//       .stub(Example, "findOne")
+//       .resolves({
         
-      } as Example);
-  });
+//       } as Example);
+//   });
 
-  after(()=>{
-    (Example.findOne as sinon.SinonStub).restore();
-  })
+//   after(()=>{
+//     (Example.findOne as sinon.SinonStub).restore();
+//   })
 
-  it('...', async () => {
-    chaiHttpResponse = await chai
-      .request(app)
+//   it('...', async () => {
+//     chaiHttpResponse = await chai
+//       .request(app)
 
-    expect(...);
-  });
+//     expect(...);
+//   });
+// });
 
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
-  });
-});
+// describe('Test /login (POST)', () => {
+//   let chaiHttpResponse: Response;
+
+//   before(async () => {
+//     sinon
+//       .stub(Example, "findOne")
+//       .resolves({
+        
+//       } as Example);
+//   });
+
+//   after(()=>{
+//     (Example.findOne as sinon.SinonStub).restore();
+//   })
+
+//   it('...', async () => {
+//     chaiHttpResponse = await chai
+//       .request(app)
+
+//     expect(...);
+//   });
+// });
