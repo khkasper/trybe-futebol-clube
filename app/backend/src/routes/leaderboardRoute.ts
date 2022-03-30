@@ -14,8 +14,12 @@ export default class Leaderboard {
   private routes(): void {
     this.router.get('/:homeOrAway', async (req: Request, res: Response) => {
       const { homeOrAway } = req.params;
-      const leaderboard: ILeaderboard[] = await LeaderboardController
-        .getLeaderboard(homeOrAway);
+      const leaderboard: ILeaderboard[] = await LeaderboardController.getLeaderboard(homeOrAway);
+      res.status(StatusCodes.OK).json(leaderboard);
+    });
+
+    this.router.get('/', async (_req: Request, res: Response) => {
+      const leaderboard: ILeaderboard[] = await LeaderboardController.getLeaderboard('both');
       res.status(StatusCodes.OK).json(leaderboard);
     });
   }

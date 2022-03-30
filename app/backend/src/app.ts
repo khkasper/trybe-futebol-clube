@@ -1,6 +1,5 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import * as cors from 'cors';
 import 'express-async-errors';
 import Login from './routes/loginRoute';
 import Clubs from './routes/clubsRoute';
@@ -13,8 +12,6 @@ class App {
 
   constructor() {
     this.app = express();
-    this.app.use(bodyParser.json());
-    this.app.use(cors());
     this.config();
     this.routes();
   }
@@ -22,12 +19,13 @@ class App {
   private config():void {
     const accessControl: express.RequestHandler = (_req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
-      res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT');
+      res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT,PATCH');
       res.header('Access-Control-Allow-Headers', '*');
       next();
     };
 
     this.app.use(accessControl);
+    this.app.use(bodyParser.json());
   }
 
   public start(PORT: string | number):void {

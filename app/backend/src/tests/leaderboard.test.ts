@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Test /leaderboard both /home and /away (GET)', () => {
+describe('Test /leaderboard (GET)', () => {
   let chaiHttpResponse: Response;
 
   describe('Test the route /leaderboard/home', () => {
@@ -27,6 +27,16 @@ describe('Test /leaderboard both /home and /away (GET)', () => {
       chaiHttpResponse = await chai
         .request(app)
         .get('/leaderboard/away');
+
+      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.OK);
+    });
+  });
+
+  describe('Test the route /leaderboard/', () => {
+    it('should return an 200 http status', async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .get('/leaderboard/');
 
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.OK);
     });
