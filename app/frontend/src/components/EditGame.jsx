@@ -29,7 +29,7 @@ const EditGame = ({
           <Scoreboard
             testId="insertion_matchs__select_quantity_goals_home_team"
             homeTeam
-            score={ currentHomeTeamGoals }
+            score={ + currentHomeTeamGoals }
             setScore={ setHomeTeamGoals }
             qtyGoal={ homeTeamGoals }
           />
@@ -40,7 +40,7 @@ const EditGame = ({
           <Scoreboard
             testId="insertion_matchs__select_quantity_goals_away_team"
             homeTeam={ false }
-            score={ currentAwayTeamGoals }
+            score={ + currentAwayTeamGoals }
             setScore={ setAwayTeamGoals }
             qtyGoal={ awayTeamGoals }
           />
@@ -56,8 +56,8 @@ const EditGame = ({
             data-testid="insertion_matchs__edit_match_btn"
             onClick={ () => updateMatch(idMatch,
               {
-                homeTeamGoals: currentHomeTeamGoals,
-                awayTeamGoals: currentAwayTeamGoals,
+                homeTeamGoals: + currentHomeTeamGoals,
+                awayTeamGoals: + currentAwayTeamGoals,
               }) }
             type="button"
           >

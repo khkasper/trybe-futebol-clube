@@ -24,13 +24,13 @@ Scoreboard.propTypes = {
   homeTeam: PropTypes.bool.isRequired,
   score: PropTypes.number,
   setScore: PropTypes.func.isRequired,
-  qtyGoal: PropTypes.string,
+  qtyGoal: PropTypes.number,
   testId: PropTypes.string.isRequired,
 };
 
 Scoreboard.defaultProps = {
-  score: undefined,
-  qtyGoal: undefined,
+  score: 0,
+  qtyGoal: 0,
 };
 
 export default Scoreboard;
